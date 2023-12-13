@@ -18,13 +18,9 @@ export const createOrder = CatchAsyncError(
 
       const user = await userModel.findById(req.user?._id);
 
-      console.log("courseId", courseId);
-
       const courseExistInUser = user?.courses.some(
         (course: any) => course._id.toString() === courseId
       );
-
-      console.log("courseExistInUser", courseExistInUser);
 
       if (courseExistInUser) {
         return next(
@@ -33,8 +29,6 @@ export const createOrder = CatchAsyncError(
       }
 
       const course = await CourseModel.findById(courseId);
-
-      console.log("course 2", course);
 
       if (!course) {
         return next(new ErrorHandler("Course not found", 404));
