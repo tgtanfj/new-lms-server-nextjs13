@@ -304,14 +304,6 @@ export const updateUserInfo = CatchAsyncError(
 
       const user = await userModel.findById(userId);
 
-      if (email && user) {
-        const isEmailExsits = await userModel.findOne({ email });
-        if (isEmailExsits) {
-          return next(new ErrorHandler("Email already exist", 400));
-        }
-        user.email = email;
-      }
-
       if (name && user) {
         user.name = name;
       }
