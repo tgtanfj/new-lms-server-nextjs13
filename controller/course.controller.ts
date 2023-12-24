@@ -114,31 +114,31 @@ export const getSingleCourse = CatchAsyncError(
   }
 );
 
-// get all course -- without purchasing
+// get all courses -- without purchasing
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const isCacheExist = await redis.get("allCourses");
+      // const isCacheExist = await redis.get("allCourses");
 
-      // cache course data, FOR: 10000+ request at the same time
-      if (isCacheExist) {
-        const courses = JSON.parse(isCacheExist);
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      } else {
-        const courses = await CourseModel.find().select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
+      // // cache course data, FOR: 10000+ request at the same time
+      // if (isCacheExist) {
+      //   const courses = JSON.parse(isCacheExist);
+      //   res.status(200).json({
+      //     success: true,
+      //     courses,
+      //   });
+      // } else {
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
 
-        await redis.set("allCourses", JSON.stringify(courses));
+      // await redis.set("allCourses", JSON.stringify(courses));
 
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      }
+      res.status(200).json({
+        success: true,
+        courses,
+      });
+      // }
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
