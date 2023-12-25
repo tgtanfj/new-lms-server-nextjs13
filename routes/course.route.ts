@@ -51,7 +51,7 @@ courseRouter.put(
 );
 
 courseRouter.get(
-  "/get-courses",
+  "/get-courses-admin-only",
   isAuthenticated,
   authorizeRoles("admin"),
   getAllCoursesOnlyForAdmin
