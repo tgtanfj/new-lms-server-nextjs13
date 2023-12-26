@@ -15,13 +15,13 @@ layoutRouter.post(
   createLayout
 );
 
-layoutRouter.post(
+layoutRouter.put(
   "/edit-layout",
   isAuthenticated,
   authorizeRoles("admin"),
   editLayout
 );
 
-layoutRouter.get("/get-layout", getLayoutByType);
+layoutRouter.get("/get-layout/:type", getLayoutByType);
 
 export default layoutRouter;
