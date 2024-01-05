@@ -115,7 +115,11 @@ export const activateUser = CatchAsyncError(
         process.env.ACTIVATION_SECRET as string
       ) as { user: IUser; activationCode: string };
 
-      if (newUser.activationCode !== activation_code) {
+      const activation_code_to_string = Object.values(activation_code);
+
+      const activation_code_result = activation_code_to_string.join('')
+
+      if (newUser.activationCode !== activation_code_result) {
         return next(new ErrorHandler("Invalid activation code", 400));
       }
 
@@ -436,7 +440,7 @@ export const updateUserRole = CatchAsyncError(
       const { email, role } = req.body;
       const isUserexist = await userModel.findOne({ email });
       if (isUserexist) {
-        const id = isUserexist._id
+        const id = isUserexist._id;
         updateUserRoleService(res, id, role);
       } else {
         res.status(400).json({

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import OrderModel, { IOrder } from "../models/order.model";
-import CourseModel from "../models/course.model";
+import CourseModel, { ICourse } from "../models/course.model";
 import path from "path";
 import ejs from "ejs";
 import userModel from "../models/user.model";
@@ -44,7 +44,7 @@ export const createOrder = CatchAsyncError(
         );
       }
 
-      const course = await CourseModel.findById(courseId);
+      const course: ICourse | null = await CourseModel.findById(courseId);
 
       if (!course) {
         return next(new ErrorHandler("Course not found", 404));
@@ -89,7 +89,7 @@ export const createOrder = CatchAsyncError(
 
       user?.courses.push(course?._id);
 
-      await redis.set(req.user?._id, JSON.stringify(user))
+      await redis.set(req.user?._id, JSON.stringify(user));
 
       await user?.save();
 
@@ -99,7 +99,7 @@ export const createOrder = CatchAsyncError(
         message: `You have a new order from ${course?.name}`,
       });
 
-      course.purchased ? (course.purchased += 1) : course.purchased;
+      course.purchased = course.purchased + 1;
 
       await course.save();
 
