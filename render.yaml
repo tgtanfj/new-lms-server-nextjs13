@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: new-lms-server
+    buildCommand: npm run build
+    startCommand: npm start
