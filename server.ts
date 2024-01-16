@@ -7,6 +7,12 @@ import http from "http"
 
 const server = http.createServer(app)
 
+// create server
+server.listen(process.env.PORT, async () => {
+  console.log(`Server is connected with port ${process.env.PORT}`)
+  await connectDB();
+})
+
 // cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -16,8 +22,3 @@ cloudinary.config({
 
 initSocketServer(server)
 
-// create server
-server.listen(process.env.PORT, () => {
-  console.log(`Server is connected with port ${process.env.PORT}`)
-  connectDB();
-})
